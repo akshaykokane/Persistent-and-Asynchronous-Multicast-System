@@ -1,4 +1,6 @@
- import java.io.IOException;
+ import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -21,8 +23,16 @@ public class Multicast implements Runnable{
 	}
 	public void run()
 	{
+		String filename="messages.log";
+		String path="C:\\Distributed\\"+filename;
+		BufferedWriter bw=null;
+		FileWriter fw = null;
 		try{
 			inputStream = new ObjectInputStream(Multicastsocket.getInputStream());
+			String message=(String)inputStream.readObject();
+			fw = new FileWriter(path,true);
+			bw= new BufferedWriter(fw);
+			bw.write(message);
 			//STORE the message in file
 		}
 		catch(Exception e)
