@@ -15,3 +15,7 @@ Project 3
 1) Dissconect should set status of participant to Inactive
 2) Deregister should remove particpant from group
 3) On reconnecting, client should recive messages in td time
+
+## Project Design
+
+![alt text](/IMG_9653.jpg)
