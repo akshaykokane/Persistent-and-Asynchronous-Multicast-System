@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.io.*; 
+import java.util.*; 
 
 class ParticipantDetail{
 	//details of thread-b of participant
@@ -15,14 +17,16 @@ class ParticipantDetail{
 	int port;
 	String status;
 	static Socket socket = null;
-	
+  static Queue<String> offlineQueue = new LinkedList<>();
+ 
 	public ParticipantDetail(String ip, int id, int port, Socket socket) {
 		
 		this.IP = ip;
 		this.id = id;
 		this.port = port;
-		this.status ="Active"; //Active, Disconnected or End
+		this.status ="Active"; //Active, Inactive or End
 		this.socket = socket;
+   
 	}
 }
 public class Coordinator {
@@ -35,6 +39,7 @@ public class Coordinator {
 		
 		int incomingMessagePort = 0;
 		int td = 0;
+    
 		List<String> configFile = Files.readAllLines(Paths.get("config.txt"));
 		
 		incomingMessagePort = Integer.parseInt(configFile.get(0));
@@ -44,7 +49,7 @@ public class Coordinator {
 		//System.out.println(td);
 		
 		//Thread to accept new connections and making entry in participant table
-		ConnectionHandler ch = new ConnectionHandler(participants, incomingMessagePort);
+		ConnectionHandler ch = new ConnectionHandler(participants, td, incomingMessagePort);
 		
 		//Thread to accept a message from participant
 		Reciever r = new Reciever(participants, td, messageQueue, incomingMessagePort);

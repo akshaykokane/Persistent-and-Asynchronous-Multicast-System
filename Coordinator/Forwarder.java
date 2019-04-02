@@ -16,6 +16,7 @@ public class Forwarder extends Thread {
    this.participants = participants;
    this.td = td;
    this.messageQueue = messageQueue; 
+
 	}
  
    public void run(){
@@ -23,15 +24,29 @@ public class Forwarder extends Thread {
    while(true){
     try{
    Thread.sleep(1);
+   //System.out.println("waiting for participant");
   
      while(messageQueue.size() > 0){
+      
       
        String messageToCast = messageQueue.poll(); //may be peek 
          for(ParticipantDetail p : participants){
          
-           socket = new Socket(p.IP, p.port);
-      	   ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-     		   outputStream.writeObject(messageToCast);
+           if(p.status.equals("Active")){
+             socket = new Socket(p.IP, p.port);
+      	     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+     		     outputStream.writeObject(messageToCast);
+           }
+           else if(p.status.equals("InActive")){
+           
+             if(p.offlineQueue.size() == td)
+               p.offlineQueue.poll(); //if td is reached, remove the oldest message and inset new in last
+               
+               p.offlineQueue.add(messageToCast);
+           
+           }
+           
+           
        
          }
        }
