@@ -46,14 +46,14 @@ public class Multicast extends Thread{
    BufferedWriter bw = null;
 		FileWriter fw = null;
 		try{
-		File file = new File(fileName);
-    FileWriter fr = new FileWriter(file, true);
-    BufferedWriter br = new BufferedWriter(fr);
-    PrintWriter pr = new PrintWriter(br);
-    pr.println(message);
-    pr.close();
-    br.close();
-    fr.close();
+    		File file = new File(fileName);
+        FileWriter fr = new FileWriter(file, true);
+        BufferedWriter br = new BufferedWriter(fr);
+        PrintWriter pr = new PrintWriter(br);
+        pr.println(message);
+        pr.close();
+        br.close();
+        fr.close();
 		}
 		catch(Exception e)
 		{

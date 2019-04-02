@@ -31,44 +31,52 @@ public class Participant {
 			System.out.print(currentWorkingDirectory);
 			input = s.nextLine();
 			String[] commandAndValue = input.split(" ");
-				
+		  Multicast threadB;
 			switch(commandAndValue[0]) {
 			
 				case "register"://participant registers with the coordinator
-					socket = new Socket(serverIP, serverPort);
-					
+					socket = new Socket(serverIP, serverPort);		
 					outputStream = new  ObjectOutputStream(socket.getOutputStream());
 					inputStream = new ObjectInputStream(socket.getInputStream());
 					threadBPort = Integer.parseInt(commandAndValue[1]);
 					participantip = Inet4Address.getLocalHost().getHostAddress();
-					outputStream.writeObject(participantip+" "+id+" "+commandAndValue[1]);
+					outputStream.writeObject(commandAndValue[0] + " "+ participantip + " " + id + " " + commandAndValue[1]);
 					outgoingMessagePort = (int)inputStream.readObject();
           System.out.println("Outgoingmessage port is " + outgoingMessagePort);
-			    Multicast threadB = new Multicast(serverIP, threadBPort, fileName);
+          threadB = new Multicast(serverIP, threadBPort, fileName);
 					threadB.start();
-					//Thread thread = new Thread(object);
-					//START THREAD HERE		
+           break;
 				case "deregister"://participant deregisters from the coordinator
-					socket.close();
-					//THREAD will stop here
+  		    socket = new Socket(serverIP, serverPort);		
+					outputStream = new  ObjectOutputStream(socket.getOutputStream());
+					inputStream = new ObjectInputStream(socket.getInputStream());
+			
+          outputStream.writeObject(commandAndValue[0] + " " + id);	
 					break;
+                
 				case "disconnect":
-					socket.close();
+        		socket = new Socket(serverIP, serverPort);		
+					outputStream = new  ObjectOutputStream(socket.getOutputStream());
+					inputStream = new ObjectInputStream(socket.getInputStream());
+			
+   	      outputStream.writeObject(commandAndValue[0] + " " + id);	
 					break;
+                
 				case "reconnect":
-					//socket = new Socket(serverip, Port);
+  		     socket = new Socket(serverIP, serverPort);		
+					outputStream = new  ObjectOutputStream(socket.getOutputStream());
+					inputStream = new ObjectInputStream(socket.getInputStream());
 					participantip = Inet4Address.getLocalHost().getHostAddress();
-					outputStream.writeObject(args[0]+participantip+commandAndValue[1]);
-					//THREAD will START AGAIN			
+					outputStream.writeObject("reconnect " + id);	
 					break;
+                
 				case "msend":
           socket = new Socket(serverIP, outgoingMessagePort);
           outputStream = new  ObjectOutputStream(socket.getOutputStream());
 					outputStream.writeObject(commandAndValue[1]);
            Thread.sleep(1000);
 					break;
-				default:
-					//Logic yet to be written
+         
 			}
 					
 		}while(!input.equals("deregister"));
