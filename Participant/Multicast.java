@@ -31,7 +31,7 @@ public class Multicast extends Thread{
       
       inputStream = new ObjectInputStream(MulticastSocket.getInputStream());
       String message = (String)inputStream.readObject();
-      System.out.println("There is an incoming message. Writing message " + message + " to output file");
+      //System.out.println("There is an incoming message. Writing message " + message + " to output file");
       writeMessage2File(message, filename);
     }
  }catch(ClassNotFoundException | IOException e){

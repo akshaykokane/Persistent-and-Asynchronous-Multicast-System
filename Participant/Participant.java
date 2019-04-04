@@ -73,7 +73,7 @@ public class Participant {
 				case "msend":
           socket = new Socket(serverIP, outgoingMessagePort);
           outputStream = new  ObjectOutputStream(socket.getOutputStream());
-					outputStream.writeObject(commandAndValue[1]);
+					outputStream.writeObject(input.substring(6));
            Thread.sleep(1000);
 					break;
          
