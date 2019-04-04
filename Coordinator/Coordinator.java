@@ -40,7 +40,7 @@ public class Coordinator {
 		int incomingMessagePort = 0;
 		int td = 0;
     
-		List<String> configFile = Files.readAllLines(Paths.get("config.txt"));
+		List<String> configFile = Files.readAllLines(Paths.get(args[0]));
 		
 		incomingMessagePort = Integer.parseInt(configFile.get(0));
 		td = Integer.parseInt(configFile.get(1));
