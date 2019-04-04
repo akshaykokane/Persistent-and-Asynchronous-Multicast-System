@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public class Participant {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 		
-		List<String> configFile = Files.readAllLines(Paths.get("config.txt"));
+		List<String> configFile = Files.readAllLines(Paths.get(args[0]));
 		Socket socket = null;
 		ObjectOutputStream outputStream = null;
 		ObjectInputStream inputStream = null;
