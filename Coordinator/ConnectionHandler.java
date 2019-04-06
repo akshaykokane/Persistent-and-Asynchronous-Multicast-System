@@ -70,6 +70,7 @@ public class ConnectionHandler extends Thread{
 						      if(p.id == tempid)
 						      {
 							        p.status = "Deregistered";
+                      p.socket.close();
 						      }
 					    }
          System.out.println("Participant id:" + particpantDetailsStr[1] +" deregistered");
@@ -82,11 +83,13 @@ public class ConnectionHandler extends Thread{
          tempid = Integer.parseInt(particpantDetailsStr[1]);
          for(ParticipantDetail p : participants)
 				 {
-					  if(p.id == tempid)
+					  if(p.id == tempid && !p.status.equals("Deregistered"))
 					  {
                       
 						    
  						  	p.status="Active";
+                p.port = Integer.parseInt(particpantDetailsStr[2]);
+                System.out.println("Now port " +p.port);
                 System.out.println("Participant id:" + particpantDetailsStr[1] +" reconnected in multicase group");
 							  //add td seconds of messages
                  while(!p.offlineQueue.isEmpty()){
@@ -97,7 +100,7 @@ public class ConnectionHandler extends Thread{
      		             outputStream.writeObject(message);
                      System.out.println(message);
                  
-                 }
+                   }
 						  
 		  	   }
 				  }

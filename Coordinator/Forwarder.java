@@ -31,7 +31,6 @@ public class Forwarder extends Thread {
       
        String messageToCast = messageQueue.poll(); //may be peek 
          for(ParticipantDetail p : participants){
-         
            if(p.status.equals("Active")){
              socket = new Socket(p.IP, p.port);
       	     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
