@@ -14,32 +14,51 @@ public class Multicast extends Thread{
 	Socket MulticastSocket=null;
 	String filename;
   private static ServerSocket server;
-  
+  boolean exit;
 	public Multicast(String serverIp, int threadBPort, String fileName) throws UnknownHostException, IOException {
 		// TODO Auto-generated constructor stub
 		this.serverip = serverIp;
 		this.threadBPort = threadBPort;
     this.filename = fileName;
     server = new ServerSocket(threadBPort);//waiting to recieve message
+    exit = false;
 	}
 	public void run()
 	{
  try{
     while(true){
-    
+     if(exit)
+        break;
+     
       MulticastSocket = server.accept();
       
       inputStream = new ObjectInputStream(MulticastSocket.getInputStream());
       String message = (String)inputStream.readObject();
       //System.out.println("There is an incoming message. Writing message " + message + " to output file");
       writeMessage2File(message, filename);
+      
+     
     }
+
  }catch(ClassNotFoundException | IOException e){
-   e.printStackTrace();
+   if(false)
+     System.out.println("No");
  }
     
 
 	}
+
+  public void close(){
+    try{
+        
+        server.close();
+ 
+        exit = true;
+    }
+    catch(IOException e){
+      e.printStackTrace();
+    }
+  }
  
    public void writeMessage2File(String message, String fileName){
  		
