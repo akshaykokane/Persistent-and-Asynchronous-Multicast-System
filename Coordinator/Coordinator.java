@@ -31,8 +31,12 @@ class ParticipantDetail{
 }
 public class Coordinator {
 
-	public static ArrayList<ParticipantDetail> participants = new ArrayList<>();
-	public static Queue<String> messageQueue = new LinkedList<>();
+	public static ArrayList<Long> timestamp = new ArrayList<Long>();
+  public static ArrayList<String> messagelist = new ArrayList<String>();
+  public static ArrayList<ParticipantDetail> participants = new ArrayList<>();
+	public static ArrayList<String> removedmessage = new ArrayList<String>();
+  public static ArrayList<Long> removedtime = new ArrayList<Long>();
+  //public static Queue<String> messageQueue = new LinkedList<>();
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -49,13 +53,13 @@ public class Coordinator {
 		//System.out.println(td);
 		
 		//Thread to accept new connections and making entry in participant table
-		ConnectionHandler ch = new ConnectionHandler(participants, td, incomingMessagePort);
+		ConnectionHandler ch = new ConnectionHandler(participants, td, incomingMessagePort, timestamp, messagelist,removedmessage,removedtime);
 		
 		//Thread to accept a message from participant
-		Reciever r = new Reciever(participants, td, messageQueue, incomingMessagePort);
+		Reciever r = new Reciever(participants, td, incomingMessagePort, messagelist,timestamp);
 		
 		//Thread to forward message to multicast group
-		Forwarder fwd = new Forwarder(participants, td, messageQueue);
+		Forwarder fwd = new Forwarder(participants, td, messagelist, removedmessage, removedtime, timestamp);
 		
 		r.start();
 		fwd.start();

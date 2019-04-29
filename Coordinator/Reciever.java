@@ -11,18 +11,22 @@ import java.util.*;
 
 public class Reciever extends Thread {
 	ArrayList<ParticipantDetail> participants;
+  ArrayList<Long> timestamp;
+  ArrayList<String> messagelist;
 	int td;
  int count = 0;
 	Queue<String> messageQueue;
 	 private static ServerSocket server;
 	 static Socket socket = null;
 
-	public Reciever(ArrayList<ParticipantDetail> participants, int td, Queue<String> messageQueue, int incomingMessagePort) throws IOException {
+	public Reciever(ArrayList<ParticipantDetail> participants, int td, int incomingMessagePort,ArrayList<String> messagelist, ArrayList<Long> timestamp) throws IOException {
 		// TODO Auto-generated constructor stub
 		System.out.println("In reciever constructor");
 		this.participants = participants;
 		this.td = td;
-		this.messageQueue = messageQueue;
+		//this.messageQueue = messageQueue;
+    this.messagelist=messagelist;
+    this.timestamp = timestamp;
 		server = new ServerSocket(incomingMessagePort);//waiting to recieve message
 	}
 	
@@ -37,14 +41,19 @@ public class Reciever extends Thread {
 				//		
 			 }
 			 socket = server.accept();
+        long currentreceivetime = System.currentTimeMillis();
 			 System.out.println("Particpant Connected");
 			 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 			 String message = (String) inputStream.readObject();
 			 System.out.println("Message Recieved - > " + message);
-			 messageQueue.add(message);
+        currentreceivetime=currentreceivetime/1000;
+			 messagelist.add(message);
+        timestamp.add(currentreceivetime);
 			 System.out.println("Message Added in messageQueue and ready to multicast");
        count++;
-       writeMessage2LogFile(message);
+       System.out.println(messagelist);
+       System.out.println(timestamp);
+      // writeMessage2LogFile(message);
    
 			 socket.close();
 		 }
