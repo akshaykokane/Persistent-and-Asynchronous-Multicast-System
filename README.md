@@ -1,4 +1,4 @@
-# distributed-3 Project 3
+# Persistent and Asynchronous Multicast System
  
 
 ## Completed
